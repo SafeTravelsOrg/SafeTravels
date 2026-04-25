@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SafeTravels</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/src/styles.css" />
+        <script type="module" src="/src/main.ts"></script>
+    </head>
+    <body>
+        <div id="map"></div>
+
+        <!-- Bottom-left: walkability score card (hidden until first score) -->
+        <div class="float-panel score-card" id="score-card" style="display:none">
+            <div class="score-header">
+                <span class="sketch">walkability nearby</span>
+                <button id="clear-btn" class="clear-btn" title="Clear scoring">×</button>
+            </div>
+            <div class="score-big">
+                <span id="score-num" class="score-num">—</span>
+                <span id="score-sub" class="score-sub">/ 100</span>
+            </div>
+            <div id="score-bars" class="score-bars"></div>
+            <div class="score-footer">
+                ~5 mi radius · <span id="route-count">0</span> routes scored
+            </div>
+        </div>
+
+        <!-- Bottom-right: route score legend -->
+        <div class="float-panel legend-panel">
+            <div class="sketch legend-title">route score</div>
+            <div class="legend-gradient"></div>
+            <div class="legend-ticks">
+                <span>0 rough</span><span>50</span><span>100 great</span>
+            </div>
+            <div class="legend-hint" id="legend-hint">click map to score</div>
+        </div>
+    </body>
+</html>
