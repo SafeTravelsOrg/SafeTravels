@@ -32,9 +32,38 @@
             </div>
         </div>
 
-        <!-- Bottom-right: route score legend + radius slider -->
+        <!-- Bottom-left: route card (shown in route mode) -->
+        <div class="float-panel route-card" id="route-card" style="display:none">
+            <div class="score-header">
+                <span class="sketch">walkability route</span>
+                <button id="route-clear-btn" class="clear-btn" title="Clear route">×</button>
+            </div>
+            <div class="route-ab">
+                <span class="route-badge route-badge-a">A</span>
+                <div class="route-ab-line"></div>
+                <span class="route-badge route-badge-b">B</span>
+            </div>
+            <div class="route-stats">
+                <div class="route-stat">
+                    <span class="route-stat-lbl">distance</span>
+                    <span id="route-dist" class="route-stat-val">—</span>
+                </div>
+                <div class="route-stat-div"></div>
+                <div class="route-stat">
+                    <span class="route-stat-lbl">avg score</span>
+                    <span id="route-score" class="route-stat-val score-num" style="font-size:22px">—</span>
+                </div>
+            </div>
+            <div class="score-footer" id="route-footer">click map to place A</div>
+        </div>
+
+        <!-- Bottom-right: route score legend + radius slider + mode tabs -->
         <div class="float-panel legend-panel">
-            <div class="sketch legend-title">route score</div>
+            <div class="mode-tabs">
+                <button class="mode-tab" id="tab-score" data-active="true">score area</button>
+                <button class="mode-tab" id="tab-route" data-active="false">route</button>
+            </div>
+            <div class="sketch legend-title" style="margin-top:10px">route score</div>
             <div class="legend-gradient"></div>
             <div class="legend-ticks">
                 <span>0 rough</span><span>50</span><span>100 great</span>
@@ -45,6 +74,37 @@
                 <span id="radius-value" class="radius-value">1 mi</span>
             </div>
             <div class="legend-hint" id="legend-hint">click map to score</div>
+            <div class="priorities-toggle-row">
+                <span class="priorities-heading">priorities</span>
+            </div>
+            <div id="priorities-panel">
+                <div class="priority-row">
+                    <span class="priority-label">road exposure</span>
+                    <input type="range" class="priority-slider" id="pw-roads" min="0" max="10" step="1" value="4" />
+                    <span class="priority-val" id="pv-roads">4</span>
+                </div>
+                <div class="priority-row">
+                    <span class="priority-label">quietness</span>
+                    <input type="range" class="priority-slider" id="pw-quiet" min="0" max="10" step="1" value="3" />
+                    <span class="priority-val" id="pv-quiet">3</span>
+                </div>
+                <div class="priority-row">
+                    <span class="priority-label">greenery</span>
+                    <input type="range" class="priority-slider" id="pw-greenery" min="0" max="10" step="1" value="1" />
+                    <span class="priority-val" id="pv-greenery">1</span>
+                </div>
+                <div class="priority-row">
+                    <span class="priority-label">pavement</span>
+                    <input type="range" class="priority-slider" id="pw-surface" min="0" max="10" step="1" value="1" />
+                    <span class="priority-val" id="pv-surface">1</span>
+                </div>
+                <div class="priority-row">
+                    <span class="priority-label">flatness</span>
+                    <input type="range" class="priority-slider" id="pw-slope" min="0" max="10" step="1" value="1" />
+                    <span class="priority-val" id="pv-slope">1</span>
+                </div>
+                <button id="priorities-reset" class="priorities-reset-btn">reset</button>
+            </div>
         </div>
     </body>
 </html>

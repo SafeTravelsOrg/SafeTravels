@@ -1,5 +1,6 @@
 import type { Map } from "maplibre-gl";
 import { scoreToHex, scoreLabel, type AreaStats } from "./scorer";
+import type { RouteResult } from "./routing";
 
 type LayerGroup = "footway" | "roads" | "parks" | "water" | "buildings";
 
@@ -31,6 +32,8 @@ const FACTOR_LABELS: Record<string, string> = {
 export interface UIControls {
   showScoreCard: (stats: AreaStats) => void;
   hideScoreCard: () => void;
+  showRouteCard: (result: RouteResult | null, hint?: string) => void;
+  hideRouteCard: () => void;
 }
 
 export function setupUI(_map: Map): UIControls {
@@ -40,6 +43,11 @@ export function setupUI(_map: Map): UIControls {
   const routeCount = document.getElementById("route-count")!;
   const scoreBars = document.getElementById("score-bars")!;
   const hint = document.getElementById("legend-hint")!;
+
+  const routeCard   = document.getElementById("route-card")!;
+  const routeDist   = document.getElementById("route-dist")!;
+  const routeScore  = document.getElementById("route-score")!;
+  const routeFooter = document.getElementById("route-footer")!;
 
   function showScoreCard(stats: AreaStats): void {
     scoreNum.textContent = String(stats.score);
@@ -66,7 +74,27 @@ export function setupUI(_map: Map): UIControls {
     hint.textContent = "click map to score";
   }
 
-  return { showScoreCard, hideScoreCard };
+  function showRouteCard(result: RouteResult | null, routeHint = ""): void {
+    routeCard.style.display = "block";
+    if (result) {
+      const miles = (result.distanceMeters / 1609.34).toFixed(2);
+      routeDist.textContent  = `${miles} mi`;
+      routeScore.textContent = String(result.avgScore);
+      routeScore.style.color = scoreToHex(result.avgScore);
+      routeFooter.textContent = `${scoreLabel(result.avgScore)} · click map to re-route`;
+    } else {
+      routeDist.textContent  = "—";
+      routeScore.textContent = "—";
+      routeScore.style.color = "#888";
+      routeFooter.textContent = routeHint || "click map to place A";
+    }
+  }
+
+  function hideRouteCard(): void {
+    routeCard.style.display = "none";
+  }
+
+  return { showScoreCard, hideScoreCard, showRouteCard, hideRouteCard };
 }
 
 export function toggleLayers(map: Map, group: LayerGroup, visible: boolean): void {

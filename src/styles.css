@@ -365,3 +365,229 @@ body {
     text-align: right;
     flex-shrink: 0;
 }
+
+/* --- Mode tabs (legend panel) --- */
+.mode-tabs {
+    display: flex;
+    border: 1px solid #1a1a1a;
+    box-shadow: 2px 2px 0 #1a1a1a;
+}
+
+.mode-tab {
+    flex: 1;
+    padding: 5px 0;
+    border: none;
+    background: #fff;
+    font-family: "Roboto", cursive;
+    font-size: 10px;
+    cursor: pointer;
+    color: #1a1a1a;
+    letter-spacing: 0.04em;
+}
+
+.mode-tab + .mode-tab {
+    border-left: 1px solid #1a1a1a;
+}
+
+.mode-tab[data-active="true"] {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+/* --- Route card (bottom-left, mirrors score card) --- */
+.route-card {
+    bottom: 16px;
+    left: 16px;
+    width: 280px;
+    padding: 12px;
+}
+
+.route-ab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 10px 0 8px;
+}
+
+.route-badge {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Roboto", cursive;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.route-badge-a { background: #e74c3c; color: #fff; }
+.route-badge-b { background: #27ae60; color: #fff; }
+
+.route-ab-line {
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(
+        to right,
+        #1a1a1a 0, #1a1a1a 5px,
+        transparent 5px, transparent 9px
+    );
+}
+
+.route-stats {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 4px;
+}
+
+.route-stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.route-stat-div {
+    width: 1px;
+    height: 32px;
+    background: #ddd;
+    margin: 0 10px;
+    flex-shrink: 0;
+}
+
+.route-stat-lbl {
+    font-size: 9px;
+    color: #888;
+    letter-spacing: 0.06em;
+}
+
+.route-stat-val {
+    font-family: "Roboto", cursive;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    color: #1a1a1a;
+}
+
+/* --- Priorities panel --- */
+.priorities-toggle-row {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed #ddd;
+}
+
+.priorities-heading {
+    display: block;
+    font-family: "Roboto", cursive;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: #444;
+    padding: 2px 0;
+}
+
+#priorities-panel {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.priority-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 18px;
+    align-items: center;
+    gap: 6px;
+}
+
+.priority-label {
+    font-size: 9px;
+    color: #444;
+}
+
+.priority-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    height: 4px;
+    background: #ddd;
+    border: 1px solid #1a1a1a;
+    outline: none;
+    cursor: pointer;
+}
+
+.priority-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #1a1a1a;
+    cursor: pointer;
+    border: none;
+}
+
+.priority-slider::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    background: #1a1a1a;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+}
+
+.priority-val {
+    font-size: 9px;
+    color: #888;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.priorities-reset-btn {
+    margin-top: 2px;
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 9px;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    letter-spacing: 0.04em;
+}
+
+.priorities-reset-btn:hover {
+    color: #1a1a1a;
+    text-decoration: underline;
+}
+
+/* --- Route A/B map markers --- */
+.route-marker {
+    width: 26px;
+    height: 26px;
+    border: 2px solid #1a1a1a;
+    box-shadow: 2px 2px 0 #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Roboto", cursive;
+    font-size: 13px;
+    font-weight: 700;
+    position: relative;
+    cursor: default;
+}
+
+/* Downward pointer so the bottom of the marker touches the location */
+.route-marker::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1a1a;
+}
+
+.route-marker-a { background: #e74c3c; color: #fff; }
+.route-marker-b { background: #27ae60; color: #fff; }

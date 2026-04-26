@@ -107,9 +107,9 @@ function slopeGrade(map: MaplibreMap, coords: [number, number][]): number | null
   return maxGrade;
 }
 
-function lineCoords(geom: Feature['geometry']): [number, number][] {
-  if (geom.type === 'LineString')      return geom.coordinates as [number, number][];
-  if (geom.type === 'MultiLineString') return (geom.coordinates as [number,number][][]).flat();
+function lineSegments(geom: Feature['geometry']): [number, number][][] {
+  if (geom.type === 'LineString')      return [geom.coordinates as [number, number][]];
+  if (geom.type === 'MultiLineString') return geom.coordinates as [number, number][][];
   return [];
 }
 
@@ -206,23 +206,29 @@ function applyScoring(map: MaplibreMap, center: [number, number], radiusMeters: 
     // MapGeoJSONFeature (has sourceLayer). When sourceLayer is present, filter to transportation only.
     if (feat.sourceLayer !== undefined && feat.sourceLayer !== 'transportation') continue;
     const props = feat.properties ?? {};
-    const coords = lineCoords(feat.geometry);
-    if (!coords.length) continue;
 
-    // Deduplicate: same OSM way appears in multiple tiles at tile boundaries
-    const key = feat.id != null
-      ? `${feat.sourceLayer ?? 'transportation'}:${feat.id}`
-      : `${feat.sourceLayer ?? 'transportation'}:${coords[0][0].toFixed(5)},${coords[0][1].toFixed(5)}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
+    // Process each sub-line independently so MultiLineString sub-lines aren't joined.
+    for (const coords of lineSegments(feat.geometry)) {
+      if (!coords.length) continue;
 
-    const cls = String(props.class ?? '');
-    if (cls in ROAD_CLASS_INTENSITY) {
-      let idx = roadIndexes.get(cls);
-      if (!idx) { idx = new GridIndex(); roadIndexes.set(cls, idx); }
-      for (let i = 0; i < coords.length; i += 4) idx.insert(coords[i]);
-    } else if (isWalkable(props)) {
-      walkable.push({ props, geom: feat.geometry, coords });
+      // Key includes start, end, and vertex count so distinct geometries don't collide
+      // when feat.id is missing (some tile sources don't populate it) — without this,
+      // walkways that share an endpoint with another way at an intersection would dedup
+      // down to a single segment.
+      const last = coords[coords.length - 1];
+      const key = `${feat.sourceLayer ?? 'transportation'}:${feat.id ?? 'noid'}:${coords.length}:${coords[0][0].toFixed(5)},${coords[0][1].toFixed(5)}:${last[0].toFixed(5)},${last[1].toFixed(5)}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      const cls = String(props.class ?? '');
+      if (cls in ROAD_CLASS_INTENSITY) {
+        let idx = roadIndexes.get(cls);
+        if (!idx) { idx = new GridIndex(); roadIndexes.set(cls, idx); }
+        for (let i = 0; i < coords.length; i += 4) idx.insert(coords[i]);
+      } else if (isWalkable(props)) {
+        const geom: Feature['geometry'] = { type: 'LineString', coordinates: coords };
+        walkable.push({ props, geom, coords });
+      }
     }
   }
 
@@ -232,9 +238,11 @@ function applyScoring(map: MaplibreMap, center: [number, number], radiusMeters: 
   let nearestBreakdown: ScoreBreakdown = { roads: 0, greenery: 0, quiet: 0, surface: 0, slope: 0 };
 
   for (const { props, geom, coords } of walkable) {
+    // Centroid of a long path can be outside the radius even when part of the path is inside.
+    // Include the path if any vertex is within the radius.
+    if (!coords.some(pt => haversine(center, pt) <= radiusMeters)) continue;
     const c = lineCentroid(coords);
     const dist = haversine(center, c);
-    if (dist > radiusMeters) continue;
 
     // Road intensity decays linearly with distance: full intensity at 0 m, zero at the class's max radius.
     // A path 10 m from a motorway scores very differently from one 140 m away.

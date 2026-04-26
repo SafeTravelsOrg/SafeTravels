@@ -18,13 +18,22 @@ export interface AreaStats {
 }
 
 // Weights must sum to 1.0
-const WEIGHTS: Record<keyof ScoreBreakdown, number> = {
+export const WEIGHTS: Record<keyof ScoreBreakdown, number> = {
   roads: 0.4,
   greenery: 0.1,
   quiet: 0.3,
   surface: 0.1,
   slope: 0.1,
 };
+
+// Raw values (any positive scale) — normalizes them into WEIGHTS in-place.
+export function setWeights(raw: Record<keyof ScoreBreakdown, number>): void {
+  const total = (Object.values(raw) as number[]).reduce((s, v) => s + v, 0);
+  if (total === 0) return;
+  for (const k of Object.keys(raw) as (keyof ScoreBreakdown)[]) {
+    WEIGHTS[k] = raw[k] / total;
+  }
+}
 
 type Props = Record<string, unknown>;
 
@@ -39,6 +48,7 @@ export const WALKABLE_SUBCLASSES = new Set([
   "footway",
   "path",
   "sidewalk",
+  "crossing",
   "steps",
   "bridleway",
   "cycleway",
