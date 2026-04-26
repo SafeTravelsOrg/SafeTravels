@@ -28,16 +28,21 @@
             </div>
             <div id="score-bars" class="score-bars"></div>
             <div class="score-footer">
-                ~5 mi radius · <span id="route-count">0</span> routes scored
+                <span id="radius-footer">~1 mi radius</span> · <span id="route-count">0</span> routes scored
             </div>
         </div>
 
-        <!-- Bottom-right: route score legend -->
+        <!-- Bottom-right: route score legend + radius slider -->
         <div class="float-panel legend-panel">
             <div class="sketch legend-title">route score</div>
             <div class="legend-gradient"></div>
             <div class="legend-ticks">
                 <span>0 rough</span><span>50</span><span>100 great</span>
+            </div>
+            <div class="radius-row">
+                <span class="sketch legend-title">radius</span>
+                <input type="range" id="radius-slider" min="0.25" max="3" step="0.25" value="1" class="radius-slider" />
+                <span id="radius-value" class="radius-value">1 mi</span>
             </div>
             <div class="legend-hint" id="legend-hint">click map to score</div>
         </div>

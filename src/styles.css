@@ -284,3 +284,84 @@ body {
     font-style: italic;
     letter-spacing: 0.02em;
 }
+
+/* --- Hover score tooltip --- */
+.route-tooltip {
+    position: fixed;
+    background: #fff;
+    border: 1px solid #1a1a1a;
+    box-shadow: 2px 2px 0 #1a1a1a;
+    padding: 4px 10px 6px;
+    pointer-events: none;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.route-tooltip-score {
+    font-family: "Roboto", cursive;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.route-tooltip-label {
+    font-size: 9px;
+    color: #888;
+    font-style: italic;
+    margin-top: 3px;
+}
+
+.radius-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dashed #ddd;
+}
+
+.radius-row .legend-title {
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.radius-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: #ddd;
+    border: 1px solid #1a1a1a;
+    outline: none;
+    cursor: pointer;
+}
+
+.radius-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #1a1a1a;
+    cursor: pointer;
+    border: none;
+}
+
+.radius-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #1a1a1a;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+}
+
+.radius-value {
+    font-size: 9px;
+    color: #444;
+    font-variant-numeric: tabular-nums;
+    width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+}

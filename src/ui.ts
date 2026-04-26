@@ -42,9 +42,9 @@ export function setupUI(_map: Map): UIControls {
   const hint = document.getElementById("legend-hint")!;
 
   function showScoreCard(stats: AreaStats): void {
-    scoreNum.textContent = String(stats.avgScore);
-    scoreNum.style.color = scoreToHex(stats.avgScore);
-    scoreSub.textContent = `/ 100 · ${scoreLabel(stats.avgScore)}`;
+    scoreNum.textContent = String(stats.score);
+    scoreNum.style.color = scoreToHex(stats.score);
+    scoreSub.textContent = `/ 100 · ${scoreLabel(stats.score)}`;
     routeCount.textContent = String(stats.routeCount);
     hint.textContent = "click map to re-score";
 
