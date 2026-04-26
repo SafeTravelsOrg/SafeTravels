@@ -5,7 +5,8 @@ import { initScoringLayers, scoreArea, clearScoring } from "./scoring-layer";
 
 const map = new maplibregl.Map({
   container: "map",
-  style: "http://localhost:8080/styles/Walking/style.json",
+  style:
+    "https://uw-hack-bucket-23480234.s3.us-east-1.amazonaws.com/style.json",
   center: [-122.33, 47.61],
   zoom: 10,
   attributionControl: false,
